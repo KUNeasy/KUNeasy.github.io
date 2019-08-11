@@ -3,8 +3,19 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://KUNeasy.github.io/tensorflow/buildtensorflow/</loc>
+    <lastmod>2019-08-12T00:34:43+08:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://KUNeasy.github.io/</loc>
-    <lastmod>2019-07-16T16:56:05+08:00</lastmod>
+    <lastmod>2019-08-12T00:34:43+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://KUNeasy.github.io/tensorflow/</loc>
+    <lastmod>2019-08-12T00:34:43+08:00</lastmod>
     <priority>0</priority>
   </url>
   

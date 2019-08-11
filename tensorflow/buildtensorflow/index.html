@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Posts</title>
+        <title>Buildtensorflow</title>
         <style>
 
     html body {
@@ -96,9 +96,6 @@ $(document).ready(function(){
 </script>
  <meta name="generator" content="Hugo 0.55.6" />
         
-        <link href="https://KUNeasy.github.io/post/index.xml" rel="alternate" type="application/rss+xml" title="Mrlkun" />
-        <link href="https://KUNeasy.github.io/post/index.xml" rel="feed" type="application/rss+xml" title="Mrlkun" />
-        
         
 
     
@@ -114,7 +111,7 @@ $(document).ready(function(){
     
     
     
-    <meta property="og:title" content="Posts">
+    <meta property="og:title" content="Buildtensorflow">
     <meta property="og:type" content="article">
       
       <meta name="twitter:card" content="summary">
@@ -139,7 +136,7 @@ $(document).ready(function(){
         <nav class="navbar navbar-default navbar-fixed-top">
             <div class="container">
                 <div class="navbar-header">
-                    <a class="navbar-brand visible-xs" href="#">Posts</a>
+                    <a class="navbar-brand visible-xs" href="#">Buildtensorflow</a>
                     <button class="navbar-toggle" data-target=".navbar-collapse" data-toggle="collapse">
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
@@ -183,11 +180,8 @@ $(document).ready(function(){
 
 
 <main>
-    <h2>Posts</h2>
 
-    
-        
-           <div class="item">
+    <div class="item">
 
     
     
@@ -198,21 +192,178 @@ $(document).ready(function(){
       
     
 
-    <h4><a href="/2019/07/16/%E4%BD%BF%E7%94%A8hugo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/">使用Hugo搭建个人博客</a></h4>
-    <h5>July 16, 2019 - 1 minutes</h5>
+    <h4><a href="/tensorflow/buildtensorflow/">Buildtensorflow</a></h4>
+    <h5>August 12, 2019 - 2 minutes</h5>
     <h5></h5>
+
     
     
 
 </div>
 
-        
+
+    <br> <div class="text-justify">
+
+<h2 id="模块化搭建神经网络">模块化搭建神经网络</h2>
+
+<p>神经网络搭建包括前向传播过程、反向传播过程、反向传播过程中用到的正则化、指数衰减学习率、滑动平均方法的设置、以及测试模块。</p>
+
+<h3 id="模块一-前向传播过程-forward-py">模块一 前向传播过程（forward.py）</h3>
+
+<p>前向传播过程中，需要定义神经网络中的参数 w 和偏置 b，定义由输入到输出的网络结构。通过定义函数 get_weight()实现对参数 w 的设置，包括参数 w 的形状和是否正则化的标志。同样，通过定义函数 get_bias()实现对偏置 b 的设置。</p>
+
+<pre><code class="language-python">import tensorflow as tf
+
+INPUT_NODE = 784
+OUTPUT_NODE = 10
+LAYER1_NODE = 500
+
+def get_weight(shape, regularizer):
+    w = tf.Variable(tf.truncated_normal(shape,stddev=0.1))
+    if regularizer != None: tf.add_to_collection('losses', tf.contrib.layers.l2_regularizer(regularizer)(w))
+    return w
+
+
+def get_bias(shape):  
+    b = tf.Variable(tf.zeros(shape))  
+    return b
+	
+def forward(x, regularizer):
+    w1 = get_weight([INPUT_NODE, LAYER1_NODE], regularizer)
+    b1 = get_bias([LAYER1_NODE])
+    y1 = tf.nn.relu(tf.matmul(x, w1) + b1)
+
+    w2 = get_weight([LAYER1_NODE, OUTPUT_NODE], regularizer)
+    b2 = get_bias([OUTPUT_NODE])
+    y = tf.matmul(y1, w2) + b2
+    return y
+</code></pre>
+
+<h3 id="模块二-反向传播过程-backward-py">模块二 反向传播过程（backward.py）</h3>
+
+<p>反向传播过程完成网络参数的训练,用 tf.placeholder(dtype, shape)函数实现训练样本 x 和样本标签 y_占位，函数参数 dtype 表示数据的类型，shape 表示数据的形状；y 表示定义的前向传播函数 forward；loss 表示定义的损失函数，一般为预测值与样本标签的交叉熵（或均方误差）与正则化损失之和；train_step 表示利用优化算法对模型参数进行优化，常 用 优 化 算 法 GradientDescentOptimizer 、AdamOptimizer、MomentumOptimizer 算法，在上述代码中使用的 GradientDes
+centOptimizer 优化算法。接着实例化 saver 对象，其中利用 tf.initialize_all_variables().run()函数实例化所有参数模型，利用 sess.run( )函数实现模型的训练优化过程，并每间隔一定轮数保存一次模型。</p>
+
+<pre><code class="language-python">import tensorflow as tf
+from tensorflow.examples.tutorials.mnist import input_data
+import mnist_forward
+import os
+
+BATCH_SIZE = 200
+LEARNING_RATE_BASE = 0.1
+LEARNING_RATE_DECAY = 0.99
+REGULARIZER = 0.0001
+STEPS = 50000
+MOVING_AVERAGE_DECAY = 0.99
+MODEL_SAVE_PATH=&quot;./model/&quot;
+MODEL_NAME=&quot;mnist_model&quot;
+
+
+def backward(mnist):
+
+    x = tf.placeholder(tf.float32, [None, mnist_forward.INPUT_NODE])
+    y_ = tf.placeholder(tf.float32, [None, mnist_forward.OUTPUT_NODE])
+    y = mnist_forward.forward(x, REGULARIZER)
+    global_step = tf.Variable(0, trainable=False)
+
+    ce = tf.nn.sparse_softmax_cross_entropy_with_logits(logits=y, labels=tf.argmax(y_, 1))
+    cem = tf.reduce_mean(ce)
+    loss = cem + tf.add_n(tf.get_collection('losses'))
+
+    learning_rate = tf.train.exponential_decay(
+        LEARNING_RATE_BASE,
+        global_step,
+        mnist.train.num_examples / BATCH_SIZE, 
+        LEARNING_RATE_DECAY,
+        staircase=True)
+
+    train_step = tf.train.GradientDescentOptimizer(learning_rate).minimize(loss, global_step=global_step)
+
+    ema = tf.train.ExponentialMovingAverage(MOVING_AVERAGE_DECAY, global_step)
+    ema_op = ema.apply(tf.trainable_variables())
+    with tf.control_dependencies([train_step, ema_op]):
+        train_op = tf.no_op(name='train')
+
+    saver = tf.train.Saver()
+
+    with tf.Session() as sess:
+        init_op = tf.global_variables_initializer()
+        sess.run(init_op)
+
+        for i in range(STEPS):
+            xs, ys = mnist.train.next_batch(BATCH_SIZE)
+            _, loss_value, step = sess.run([train_op, loss, global_step], feed_dict={x: xs, y_: ys})
+            if i % 1000 == 0:
+                print(&quot;After %d training step(s), loss on training batch is %g.&quot; % (step, loss_value))
+                saver.save(sess, os.path.join(MODEL_SAVE_PATH, MODEL_NAME), global_step=global_step)
+
+
+def main():
+    mnist = input_data.read_data_sets(&quot;./data/&quot;, one_hot=True)
+    backward(mnist)
+
+if __name__ == '__main__':
+    main()
+
+
+</code></pre>
+
+<h3 id="模块三-测试过程-test-py">模块三 测试过程（test.py）</h3>
+
+<p>当神经网络模型训练完成后，便可用于测试数据集，验证神经网络的性能。通过对测试数据的预测得到准确率，从而判断出训练出的神经网络模型的性能好
+坏。当准确率低时，可能原因有模型需要改进，或者是训练数据量太少导致过拟合。</p>
+
+<pre><code class="language-python">#coding:utf-8
+import time
+import tensorflow as tf
+from tensorflow.examples.tutorials.mnist import input_data
+import mnist_forward
+import mnist_backward
+TEST_INTERVAL_SECS = 5
+
+def test(mnist):
+    with tf.Graph().as_default() as g:
+        x = tf.placeholder(tf.float32, [None, mnist_forward.INPUT_NODE])
+        y_ = tf.placeholder(tf.float32, [None, mnist_forward.OUTPUT_NODE])
+        y = mnist_forward.forward(x, None)
+
+        ema = tf.train.ExponentialMovingAverage(mnist_backward.MOVING_AVERAGE_DECAY)
+        ema_restore = ema.variables_to_restore()
+        saver = tf.train.Saver(ema_restore)
+		
+        correct_prediction = tf.equal(tf.argmax(y, 1), tf.argmax(y_, 1))
+        accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
+
+        while True:
+            with tf.Session() as sess:
+                ckpt = tf.train.get_checkpoint_state(mnist_backward.MODEL_SAVE_PATH)
+                if ckpt and ckpt.model_checkpoint_path:
+                    saver.restore(sess, ckpt.model_checkpoint_path)
+                    global_step = ckpt.model_checkpoint_path.split('/')[-1].split('-')[-1]
+                    accuracy_score = sess.run(accuracy, feed_dict={x: mnist.test.images, y_: mnist.test.labels})
+                    print(&quot;After %s training step(s), test accuracy = %g&quot; % (global_step, accuracy_score))
+                else:
+                    print('No checkpoint file found')
+                    return
+            time.sleep(TEST_INTERVAL_SECS)
+
+def main():
+    mnist = input_data.read_data_sets(&quot;./data/&quot;, one_hot=True)
+    test(mnist)
+
+if __name__ == '__main__':
+    main()
+</code></pre>
+</div>
+
     
     
+
+    
+
+    
+
 </main>
-
-
-
 
         <footer id = "bigfooter">
             <div style = "padding:15px;">

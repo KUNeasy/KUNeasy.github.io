@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>使用Hugo搭建个人博客</title>
+        <style>
+
+    html body {
+        font-family: 'Mina', sans-serif;
+        background-color: #B2DFEE;
+    }
+
+    :root {
+        --accent: #386890;
+        --border-width:  0 ;
+    }
+
+</style>
+
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Mina">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=VT323">
+
+
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/lakeside-light.min.css"> 
+
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.0/css/all.css" integrity="sha384-Mmxa0mLqhmOeaE8vgOSbKacftZcsNYDjQzuCOm6D02luYSzBG8vpaOykv9lFQ51Y" crossorigin="anonymous">
+
+
+<link rel="stylesheet" href="https://KUNeasy.github.io/css/main.css">
+
+
+
+
+ 
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/r.min.js"></script>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/bash.min.js"></script>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/go.min.js"></script>
+    
+
+    <script>hljs.initHighlightingOnLoad();</script>
+
+
+
+
+
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+
+<link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+<script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+
+
+<script>$(document).on('click', function() { $('.collapse').collapse('hide'); })</script>
+
+
+<script>
+$(document).ready(function(){
+    
+  var input = $('#night-mode-toggle');
+  var container = $('#bigbody');
+  var stat = $('#button-status');
+  
+  container.toggleClass(localStorage.toggled);
+  stat.bootstrapToggle(localStorage.button).change();
+  
+  input.on('click', function() {
+      if (localStorage.toggled != "-nightmode" ) {
+          container.toggleClass("-nightmode", true );
+          localStorage.toggled = "-nightmode";
+          localStorage.button = "on";
+       } else {
+          container.toggleClass("-nightmode", false );
+          localStorage.toggled = "";
+          localStorage.button = "off"
+       }
+  })
+});
+</script>
+ <meta name="generator" content="Hugo 0.55.6" />
+        
+        
+
+    
+    <link rel="apple-touch-icon" sizes="180x180" href="/img/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/img/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/img/favicon/favicon-16x16.png">
+    <link rel="manifest" href="/img/favicon/site.webmanifest">
+    <link rel="mask-icon" href="/img/favicon/safari-pinned-tab.svg" color="#000000">
+    <link rel="shortcut icon" href="/img/favicon/favicon.ico">
+    <meta name="msapplication-TileColor" content="#2b5797">
+    <meta name="msapplication-config" content="/img/favicon/browserconfig.xml">
+    <meta name="theme-color" content="#ffffff">
+    
+    
+    
+    <meta property="og:title" content="使用Hugo搭建个人博客">
+    <meta property="og:type" content="article">
+      
+      <meta name="twitter:card" content="summary">
+      <meta name="twitter:image" content="https://KUNeasy.github.io/favicon/android-chrome-192x192.png" >
+      
+    <meta property="description" content="">
+    <meta property="og:description" content="">
+    
+    <meta name="twitter:creator" content="">
+    <meta name="twitter:site" content="">
+    
+    </head>
+
+    
+    
+    <script type="text/javascript" async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+    
+
+    <body id = "bigbody">
+        <nav class="navbar navbar-default navbar-fixed-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <a class="navbar-brand visible-xs" href="#">使用Hugo搭建个人博客</a>
+                    <button class="navbar-toggle" data-target=".navbar-collapse" data-toggle="collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                </div>
+                <div class="collapse navbar-collapse">
+                    
+                        <ul class="nav navbar-nav">
+                            
+                                <li><a href="/">主页</a></li>
+                            
+                                <li><a href="/post/">博客</a></li>
+                            
+                        </ul>
+                    
+                    
+                        <ul class="nav navbar-nav navbar-right">
+                            
+                                <li class="navbar-icon"><a href="https://mail.163.com"><i class="far fa-envelope"></i></a></li>
+                            
+                                <li class="navbar-icon"><a href="https://github.com/KUNeasy"><i class="fab fa-github"></i></a></li>
+                            
+                            <li id="night-mode-toggle">
+    <input type="checkbox" id = "button-status"
+        data-toggle="toggle"
+        data-width = "10"
+        data-height = "1"
+        data-on="<i class='far fa-moon fa-lg'></i>"
+        data-off= "<i class='far fa-sun fa-lg'></i>"
+        data-style="ios"
+        data-onstyle = "default">
+</li>
+                        </ul>
+                    
+                </div>
+            </div>
+        </nav>
+
+
+<main>
+
+    <div class="item">
+
+    
+    
+    
+
+    
+    
+      
+    
+
+    <h4><a href="/2019/07/16/%E4%BD%BF%E7%94%A8hugo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/">使用Hugo搭建个人博客</a></h4>
+    <h5>July 16, 2019 - 1 minutes</h5>
+    <h5></h5>
+
+    
+    
+
+</div>
+
+
+    <br> <div class="text-justify">
+
+<h2 id="使用hugo-github搭建个人博客">使用Hugo+github搭建个人博客</h2>
+
+<p>在Windows平台上使用Hugo+github搭建个人博客，参照codesheep的方法搭建的。</p>
+
+<h3 id="下载相关软件">下载相关软件</h3>
+
+<p>首先要下载相关软件，本人就遇到了Hugo软件下载不来的问题，这里推荐一个免费的翻墙软件（不是推销，可以不使用），就可以解决这个问题。Lantern VPN 下载地址：<a href="https://lantern.updatestar.com/">https://lantern.updatestar.com/</a>  然后去百度搜索Hugo和git下载就行。</p>
+
+<h3 id="环境变量的配置">环境变量的配置</h3>
+
+<p>Hugo是一个压缩包，解压就可以使用了，git下载完要进行环境变量的配置，过程如下：右击这台电脑-&gt;属性-&gt;高级系统设置-&gt;环境变量，在系统变量中找到Path，选中点击编辑，在最后添加git安装的路径加上cmd，不是bin，我的设置如下：D:\Program Files\Git\cmd</p>
+
+<h3 id="使用hugo创建博客在本地启动">使用Hugo创建博客在本地启动</h3>
+
+<p>1.找到hugo.exe程序（即Hugo安装所在的位置），按Shift+右键，右击“在此处打开powershell窗口”,在其中输入命令：hugo version,查看Hugo版本，看是否安装成功，成功则显示版本号，如下：</p>
+
+<pre><code>PS D:\Program Files\hugo_0.55.6_Windows-64bit\myblog1&gt; hugo version
+Hugo Static Site Generator v0.55.6-A5D4C82D windows/amd64 BuildDate: 2019-05-18T07:57:00Z
+</code></pre>
+
+<p>2.新建站点，在powershell命令窗口输入：hugo new site myblog 命令创建站点，即可以在目录中看到有个myblog文件夹生成，使用命令进入myblog目录</p>
+
+<pre><code>hugo new site myblog 
+cd myblog
+</code></pre>
+
+<p>3.下载主题，在浏览器上进入网站：<a href="https://themes.gohugo.io/">https://themes.gohugo.io/</a> ，在其中选择合适的主题，这时候需要使用git工具了，在powersheell窗口执行命令，下面是我选的主题和相应的git命令：</p>
+
+<pre><code>git clone https://github.com/vaga/hugo-theme-m10c.git themes/m10c
+</code></pre>
+
+<p>这样成功下载了主题。</p>
+
+<p>4.在本地启动主题，同样在powersheell窗口执行命令：</p>
+
+<pre><code>hugo server -t m10c --buildDrafts
+</code></pre>
+
+<p>完成后的效果如下:</p>
+
+<pre><code>Building sites …
+                   | EN
++------------------+----+
+  Pages            | 19
+  Paginator pages  |  0
+  Non-page files   |  0
+  Static files     |  2
+  Processed images |  0
+  Aliases          |  7
+  Sitemaps         |  1
+  Cleaned          |  0
+
+Total in 339 ms
+Watching for changes in D:\Program Files\hugo_0.55.6_Windows-64bit\myblog1\{content,data,layouts,static,themes}
+Watching for config changes in D:\Program Files\hugo_0.55.6_Windows-64bit\myblog1\config.toml
+Environment: &quot;development&quot;
+Serving pages from memory
+Running in Fast Render Mode. For full rebuilds on change: hugo server --disableFastRender
+Web Server is available at http://localhost:1313/ (bind address 127.0.0.1)
+Press Ctrl+C to stop
+</code></pre>
+
+<p>在浏览器上打开这个网址<a href="http://localhost:1313/">http://localhost:1313/</a> ，即可以在本地看到效果。</p>
+
+<p>5.创建博客，使用命令：hugo new post/blog.md,然后就会在content/post目录下创建一个blog.md的博客。可以使用VS 2017，VS Code，IntelliJ IDEA，Note pad++等软件打开。在其中随便写点东西，例如：Hello World！</p>
+
+<pre><code>hugo new post/blog.md
+</code></pre>
+
+<h3 id="在github上新建仓库-repository">在Github上新建仓库（Repository）</h3>
+
+<p>登录github，没有就自己创建账号就行，点击右上角“+”这个图标，选择new repository，这里Repository name 前面部分一定Owner，例如我的Ower是KUNeasy，然后我的Repository name 是 KUNeasy.github.io,其他默认就好，点击Create repositor即可。</p>
+
+<h3 id="把本地博客push到github仓库上">把本地博客push到github仓库上</h3>
+
+<p>1.在power shell窗口中执行:hugo &ndash;theme=m10c &ndash;baseUrl=&ldquo;<a href="https://github仓库名/&quot;">https://github仓库名/&quot;</a> &ndash;buildDrafts</p>
+
+<pre><code> hugo --theme=m10c --baseUrl=&quot;https/:KUNeasy.github.io&quot; --buildDrafts
+</code></pre>
+
+<p>这是就会创建一个public文件。</p>
+
+<p>2.通过git工具把public里的文件推到github仓库里，进入public文件夹，执行命令：cd public ，git初始下：git init ，把文件添加到仓库：git add . ，提交命名：git commit -m &ldquo;我的hugo博客第一次提交&rdquo; ，与仓库简历联系：git remote add origin <a href="https://github.com/KUNeasy/KUNeasy.github.io.git">https://github.com/KUNeasy/KUNeasy.github.io.git</a>
+后面是你的仓库地址，记得最后要加上“.git”，最后一个命令就是推到github仓库了：git push -u origin master  。</p>
+
+<pre><code>cd public
+git init
+git add .
+git commit -m &quot;我的hugo博客第一次提交&quot;
+git remote add origin https://github.com/KUNeasy/KUNeasy.github.io.git
+git push -u origin master  
+</code></pre>
+
+<h3 id="查看">查看</h3>
+
+<p>在浏览器地址栏上输入你的仓库名即可，然后就可以看到你的博客了。</p>
+</div>
+
+    
+    
+
+    
+
+    
+
+</main>
+
+        <footer id = "bigfooter">
+            <div style = "padding:15px;">
+                <p>Powered by <a href="https://gohugo.io">Hugo</a>. Themed by <a href="https://github.com/nathancday/min_night">min_night</a>.
+                </p>
+                <a rel="license" href="https://creativecommons.org/licenses/by/4.0/"
+                title="Creative Commons Attribution 4.0 International license">
+                <i class="fab fa-creative-commons" aria-hidden="true"></i> Attribution 4.0 International license
+                </a>
+            </div>
+        </footer>
+        
+        <script async src="https://www.googletagmanager.com/gtag/js?id="></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments)};
+          gtag('js', new Date());
+          gtag('config', '');
+        </script>
+       
+    </body>
+
+</html>
+

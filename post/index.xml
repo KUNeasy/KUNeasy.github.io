@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Posts on Mrlkun</title>
+    <link>https://KUNeasy.github.io/post/</link>
+    <description>Recent content in Posts on Mrlkun</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Tue, 16 Jul 2019 16:56:05 +0800</lastBuildDate>
+    
+	<atom:link href="https://KUNeasy.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>使用Hugo搭建个人博客</title>
+      <link>https://KUNeasy.github.io/2019/07/16/%E4%BD%BF%E7%94%A8hugo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/</link>
+      <pubDate>Tue, 16 Jul 2019 16:56:05 +0800</pubDate>
+      
+      <guid>https://KUNeasy.github.io/2019/07/16/%E4%BD%BF%E7%94%A8hugo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/</guid>
+      <description>使用Hugo+github搭建个人博客 在Windows平台上使用Hugo+github搭建个人博客，参照codesheep的方法搭建的。
+下载相关软件 首先要下载相关软件，本人就遇到了Hugo软件下载不来的问题，这里推荐一个免费的翻墙软件（不是推销，可以不使用），就可以解决这个问题。Lantern VPN 下载地址：https://lantern.updatestar.com/ 然后去百度搜索Hugo和git下载就行。
+环境变量的配置 Hugo是一个压缩包，解压就可以使用了，git下载完要进行环境变量的配置，过程如下：右击这台电脑-&amp;gt;属性-&amp;gt;高级系统设置-&amp;gt;环境变量，在系统变量中找到Path，选中点击编辑，在最后添加git安装的路径加上cmd，不是bin，我的设置如下：D:\Program Files\Git\cmd
+使用Hugo创建博客在本地启动 1.找到hugo.exe程序（即Hugo安装所在的位置），按Shift+右键，右击“在此处打开powershell窗口”,在其中输入命令：hugo version,查看Hugo版本，看是否安装成功，成功则显示版本号，如下：
+PS D:\Program Files\hugo_0.55.6_Windows-64bit\myblog1&amp;gt; hugo version Hugo Static Site Generator v0.55.6-A5D4C82D windows/amd64 BuildDate: 2019-05-18T07:57:00Z  2.新建站点，在powershell命令窗口输入：hugo new site myblog 命令创建站点，即可以在目录中看到有个myblog文件夹生成，使用命令进入myblog目录
+hugo new site myblog cd myblog  3.下载主题，在浏览器上进入网站：https://themes.gohugo.io/ ，在其中选择合适的主题，这时候需要使用git工具了，在powersheell窗口执行命令，下面是我选的主题和相应的git命令：
+git clone https://github.com/vaga/hugo-theme-m10c.git themes/m10c  这样成功下载了主题。
+4.在本地启动主题，同样在powersheell窗口执行命令：
+hugo server -t m10c --buildDrafts  完成后的效果如下:
+Building sites … | EN +------------------+----+ Pages | 19 Paginator pages | 0 Non-page files | 0 Static files | 2 Processed images | 0 Aliases | 7 Sitemaps | 1 Cleaned | 0 Total in 339 ms Watching for changes in D:\Program Files\hugo_0.</description>
+    </item>
+    
+  </channel>
+</rss>
